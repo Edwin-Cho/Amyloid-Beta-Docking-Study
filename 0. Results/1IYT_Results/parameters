@@ -1,0 +1,9 @@
+Date: Sat 06 Sep 2025 13:22:55 
+Ligand: R_flurbiprofen_NCI.mol2
+Method: AC
+Target: 1iyt_single.pdb
+Sampling exhaustivity: 90
+Cavity prioritization: 60
+Random Initial Conditions: 3
+Box size: 30 30 30
+Box center: 3.6 -2.4 -0.6
