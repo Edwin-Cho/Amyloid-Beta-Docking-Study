@@ -11,13 +11,13 @@ This project conducts molecular docking research between R-flurbiprofen, a candi
 
 ### Research Objectives
 - Compare binding characteristics between soluble amyloid-beta (1IYT) and fibril form (2M4J)
-- Evaluate therapeutic potential of R-flurbiprofen
-- Propose stage-specific treatment strategies for disease progression
+- Explore therapeutic relevance of R-flurbiprofen (hypothesis-generating)
+- Discuss potential stage-specific considerations for disease progression
 
 ### Key Findings
-- **2M4J Best Binding Energy**: -4.814 kcal/mol (moderate affinity)
+- **2M4J Best Binding Energy**: ~ -4.8 kcal/mol (moderate affinity; see `3. Docking_Local/final_docking_result.pdbqt`)
 - **Structural Differences**: Clear distinction in binding characteristics between soluble vs fibril forms
-- **Therapeutic Implications**: Confirmed need for differentiated approaches by disease stage
+- **Therapeutic Implications**: Results suggest differentiated considerations may be needed by disease stage
 
 ---
 
@@ -128,7 +128,7 @@ python3 final_analysis.py
 ```
 
 **Key Results:**
-- Best binding energy: -4.814 kcal/mol
+- Best binding energy: ~ -4.8 kcal/mol (see `3. Docking_Local/final_docking_result.pdbqt`)
 - 9 binding poses generated
 - Moderate-level binding affinity (10-100 μM)
 
@@ -148,22 +148,22 @@ python3 final_analysis.py
 
 ### Novel Discoveries
 1. **Structure-specific Binding Differences**: Clear distinction between soluble vs fibril forms
-2. **Treatment Strategies**: Stage-specific personalized approaches
-3. **Drug Design**: R-flurbiprofen optimization directions
+2. **Treatment Considerations (Hypothesis)**: Stage-specific considerations discussed based on docking observations
+3. **Drug Design Directions (Hypothesis)**: Potential optimization directions discussed based on binding patterns
 
 ### Clinical Implications
-- Stage-specific treatment strategies for Alzheimer's disease progression
-- Guidelines for amyloid-targeting therapeutic development
-- Potential for personalized medicine approaches
+- Hypothesis-generating discussion for stage-specific considerations in Alzheimer's disease progression
+- Potential directions for amyloid-targeting therapeutic development (requires experimental validation)
+- Potential directions for personalized approaches (requires further studies)
 
 ---
 
 ## 📈 Key Results Summary
 
-| Structure | Docking Tool | Best Binding Energy | Binding Characteristics | Therapeutic Approach |
+| Structure | Docking Tool | Best Binding Energy | Binding Characteristics | Suggested Focus |
 |-----------|--------------|---------------------|------------------------|---------------------|
-| 1IYT | SwissDock | Various modes | Flexible binding | Preventive |
-| 2M4J | AutoDock Vina | -4.814 kcal/mol | Restricted binding | Therapeutic |
+| 1IYT | SwissDock | Various modes | Flexible binding | Early-stage hypothesis |
+| 2M4J | AutoDock Vina | ~ -4.8 kcal/mol | Restricted binding | Late-stage hypothesis |
 
 ---
 
@@ -205,4 +205,4 @@ chmod +x *.py
 
 ---
 
-**Last Updated**: September 8, 2025
+**Last Updated**: February 25, 2026

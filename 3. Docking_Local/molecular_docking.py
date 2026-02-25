@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+import shutil
 
 def run_command(cmd, description=""):
     """Run shell command and handle errors"""
@@ -75,7 +76,7 @@ receptor = {receptor_pdbqt}
 ligand = {ligand_pdbqt}
 
 # Output file
-out = docking_result.pdbqt
+out = final_docking_result.pdbqt
 
 # Search space (binding site)
 center_x = {center_x:.3f}
@@ -115,8 +116,8 @@ def analyze_results():
     print('='*60)
     
     # Check if result files exist
-    if os.path.exists('docking_result.pdbqt'):
-        print("✓ Docking result file created: docking_result.pdbqt")
+    if os.path.exists('final_docking_result.pdbqt'):
+        print("✓ Docking result file created: final_docking_result.pdbqt")
         
         # Parse the results
         try:
@@ -155,44 +156,55 @@ def main():
     print("Ligand: R-flurbiprofen")
     print("="*80)
     
-    # File paths
-    receptor_pdb = "../1. Process/2m4j_single.pdb"
-    ligand_mol2 = "../1. Process/R_flurbiprofen_NCI.mol2"
-    
-    receptor_pdbqt = "2m4j_receptor.pdbqt"
-    ligand_pdbqt = "R_flurbiprofen.pdbqt"
-    
-    # Check if input files exist
-    if not os.path.exists(receptor_pdb):
+    script_dir = Path(__file__).resolve().parent
+    repo_root = script_dir.parent
+
+    materials_dir = repo_root / "1. Materials"
+    receptor_pdb = materials_dir / "2m4j_single.pdb"
+    ligand_mol2 = materials_dir / "R_flurbiprofen_NCI.mol2"
+
+    local_materials_dir = script_dir / "Materials"
+    local_materials_dir.mkdir(parents=True, exist_ok=True)
+
+    receptor_pdbqt = local_materials_dir / "2m4j.pdbqt"
+    ligand_pdbqt = local_materials_dir / "R_flurbiprofen.pdbqt"
+
+    # Dependencies
+    if shutil.which("vina") is None:
+        print("ERROR: AutoDock Vina not found in PATH. Please install and retry.")
+        print("- macOS (Homebrew): brew install autodock-vina")
+        return False
+
+    has_obabel = shutil.which("obabel") is not None
+
+    # Ensure required inputs exist
+    if not receptor_pdb.exists():
         print(f"ERROR: Receptor file not found: {receptor_pdb}")
         return False
-    
-    if not os.path.exists(ligand_mol2):
+
+    if not ligand_mol2.exists():
         print(f"ERROR: Ligand file not found: {ligand_mol2}")
         return False
-    
-    # Step 1: Install Open Babel if needed
-    print("\nChecking for Open Babel...")
-    result = subprocess.run("which obabel", shell=True, capture_output=True)
-    if result.returncode != 0:
-        print("Installing Open Babel...")
-        if not run_command("brew install open-babel", "Installing Open Babel"):
-            print("Failed to install Open Babel. Please install manually.")
+
+    # Step 1: Prepare receptor/ligand (prefer pre-generated PDBQT)
+    if not receptor_pdbqt.exists() or not ligand_pdbqt.exists():
+        if not has_obabel:
+            print("ERROR: Open Babel (obabel) not found, but PDBQT files are missing.")
+            print("- Install Open Babel (macOS Homebrew): brew install open-babel")
+            print(f"- Or place prepared files at: {receptor_pdbqt} and {ligand_pdbqt}")
+            return False
+
+        if not prepare_receptor(str(receptor_pdb), str(receptor_pdbqt)):
+            return False
+
+        if not prepare_ligand(str(ligand_mol2), str(ligand_pdbqt)):
             return False
     
-    # Step 2: Prepare receptor (PDB to PDBQT)
-    if not prepare_receptor(receptor_pdb, receptor_pdbqt):
-        return False
-    
-    # Step 3: Prepare ligand (MOL2 to PDBQT)
-    if not prepare_ligand(ligand_mol2, ligand_pdbqt):
-        return False
-    
     # Step 4: Calculate binding site center
-    center_x, center_y, center_z = calculate_binding_site_center(receptor_pdb)
+    center_x, center_y, center_z = calculate_binding_site_center(str(receptor_pdb))
     
     # Step 5: Create Vina configuration
-    config_file = create_vina_config(receptor_pdbqt, ligand_pdbqt, 
+    config_file = create_vina_config(str(receptor_pdbqt), str(ligand_pdbqt), 
                                    center_x, center_y, center_z)
     
     # Step 6: Run docking
@@ -209,7 +221,7 @@ def main():
     print(f"  - {receptor_pdbqt} (receptor in PDBQT format)")
     print(f"  - {ligand_pdbqt} (ligand in PDBQT format)")
     print(f"  - {config_file} (Vina configuration)")
-    print(f"  - docking_result.pdbqt (docking poses)")
+    print(f"  - final_docking_result.pdbqt (docking poses)")
     print(f"  - docking_log.txt (docking log)")
     print("="*80)
     

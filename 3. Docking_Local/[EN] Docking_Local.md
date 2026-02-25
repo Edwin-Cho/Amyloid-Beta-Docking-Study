@@ -62,7 +62,7 @@ python3 final_analysis.py
 ## 📊 Key Results
 
 ### 🎯 Docking Performance
-- **Best Binding Energy**: -4.814 kcal/mol
+- **Best Binding Energy**: ~ -4.8 kcal/mol (see `final_docking_result.pdbqt`)
 - **Binding Affinity**: Moderate (10-100 μM range)
 - **Number of Binding Poses**: 9 diverse conformations
 - **Target**: Alzheimer's disease beta-amyloid fibril

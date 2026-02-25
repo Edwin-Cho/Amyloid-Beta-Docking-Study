@@ -1,0 +1,25 @@
+# AutoDock Vina configuration file
+# Receptor and ligand files
+receptor = /Users/edwinrcho/Desktop/Projects/Amyloid-Beta-Docking-Study/3. Docking_Local/Materials/2m4j.pdbqt
+ligand = /Users/edwinrcho/Desktop/Projects/Amyloid-Beta-Docking-Study/3. Docking_Local/Materials/R_flurbiprofen.pdbqt
+
+# Output file
+out = final_docking_result.pdbqt
+
+# Search space (binding site)
+center_x = -8.574
+center_y = -5.983
+center_z = 107.086
+
+# Search space size (Angstroms)
+size_x = 20
+size_y = 20
+size_z = 20
+
+# Docking parameters
+exhaustiveness = 8
+num_modes = 9
+energy_range = 3
+
+# CPU usage
+cpu = 4
